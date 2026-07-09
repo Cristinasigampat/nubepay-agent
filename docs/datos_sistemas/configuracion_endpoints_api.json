@@ -1,0 +1,75 @@
+{
+  "servicio": "NubePay Payments API",
+  "version": "3.2.0",
+  "entorno": "produccion",
+  "base_url": "https://api.nubepay.com/v3",
+  "autenticacion": {
+    "tipo": "OAuth2",
+    "flujo": "client_credentials",
+    "token_endpoint": "/oauth/token",
+    "expiracion_token_segundos": 3600,
+    "scopes_disponibles": ["payments:read", "payments:write", "accounts:read", "accounts:write", "webhooks:manage"]
+  },
+  "endpoints": [
+    {
+      "nombre": "Crear transferencia",
+      "metodo": "POST",
+      "ruta": "/transfers",
+      "scope_requerido": "payments:write",
+      "rate_limit_por_minuto": 120,
+      "descripcion": "Inicia una transferencia entre una cuenta origen y una cuenta destino, dentro o fuera de NubePay."
+    },
+    {
+      "nombre": "Consultar estado de transferencia",
+      "metodo": "GET",
+      "ruta": "/transfers/{transfer_id}",
+      "scope_requerido": "payments:read",
+      "rate_limit_por_minuto": 300,
+      "descripcion": "Devuelve el estado actual de una transferencia (pendiente, completada, rechazada, en revisión, revertida)."
+    },
+    {
+      "nombre": "Obtener saldo de cuenta",
+      "metodo": "GET",
+      "ruta": "/accounts/{account_id}/balance",
+      "scope_requerido": "accounts:read",
+      "rate_limit_por_minuto": 300,
+      "descripcion": "Retorna el saldo disponible y el saldo pendiente de una cuenta."
+    },
+    {
+      "nombre": "Crear cuenta",
+      "metodo": "POST",
+      "ruta": "/accounts",
+      "scope_requerido": "accounts:write",
+      "rate_limit_por_minuto": 60,
+      "descripcion": "Registra una nueva cuenta de usuario, disparando el flujo de KYC descrito en el Procedimiento de Apertura de Cuenta."
+    },
+    {
+      "nombre": "Registrar webhook",
+      "metodo": "POST",
+      "ruta": "/webhooks",
+      "scope_requerido": "webhooks:manage",
+      "rate_limit_por_minuto": 30,
+      "descripcion": "Suscribe una URL externa a eventos de transacciones (transfer.completed, transfer.failed, account.created)."
+    },
+    {
+      "nombre": "Consultar límites de cuenta",
+      "metodo": "GET",
+      "ruta": "/accounts/{account_id}/limits",
+      "scope_requerido": "accounts:read",
+      "rate_limit_por_minuto": 300,
+      "descripcion": "Devuelve los límites diarios, mensuales y por transacción según el nivel de KYC de la cuenta."
+    }
+  ],
+  "codigos_error_comunes": {
+    "ERR-101": "Fondos insuficientes en la cuenta origen",
+    "ERR-204": "Límite diario o mensual excedido",
+    "ERR-317": "Cuenta destino no válida o inactiva",
+    "ERR-450": "Transacción bloqueada por el motor antifraude",
+    "ERR-502": "Timeout del proveedor de rail de pago"
+  },
+  "ambientes": {
+    "sandbox": "https://sandbox-api.nubepay.com/v3",
+    "produccion": "https://api.nubepay.com/v3"
+  },
+  "contacto_soporte_tecnico": "api-support@nubepay.com"
+}

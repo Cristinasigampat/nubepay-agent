@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Manual Técnico: Integración con la API de Pagos — NubePay</title>
+</head>
+<body>
+<h1>Manual Técnico: Integración con la API de Pagos de NubePay</h1>
+<p><strong>Área:</strong> Datos y Sistemas / Ingeniería &middot; <strong>Versión:</strong> 1.4 &middot; <strong>Audiencia:</strong> Equipos internos y partners tecnológicos autorizados</p>
+
+<h2>1. Introducción</h2>
+<p>Este manual describe cómo integrarse con la API de Pagos de NubePay (v3) para iniciar transferencias, consultar estados de transacción y recibir notificaciones vía webhooks. Está dirigido a desarrolladores internos y a partners que integran soluciones de cobro/pago con NubePay.</p>
+
+<h2>2. Autenticación</h2>
+<p>La API utiliza <strong>OAuth 2.0</strong> con el flujo <code>client_credentials</code>. Todo consumidor de la API debe:</p>
+<ol>
+  <li>Solicitar credenciales (<code>client_id</code> / <code>client_secret</code>) al equipo de Plataforma vía el portal de desarrolladores.</li>
+  <li>Obtener un token de acceso llamando a <code>POST /oauth/token</code>.</li>
+  <li>Incluir el token en el header <code>Authorization: Bearer &lt;token&gt;</code> en cada request.</li>
+</ol>
+<p>Los tokens expiran a los 3600 segundos (1 hora). Se recomienda implementar renovación automática antes de la expiración.</p>
+
+<h2>3. Flujo típico de una transferencia</h2>
+<ol>
+  <li>El sistema cliente llama a <code>POST /transfers</code> con los datos de la cuenta origen, cuenta destino y monto.</li>
+  <li>NubePay valida saldo, límites y reglas antifraude en tiempo real.</li>
+  <li>Se retorna un <code>transfer_id</code> y un estado inicial (normalmente <code>pendiente</code>).</li>
+  <li>El sistema cliente puede consultar el estado con <code>GET /transfers/{transfer_id}</code> o suscribirse a un webhook para recibir el evento <code>transfer.completed</code> o <code>transfer.failed</code> de forma asíncrona.</li>
+</ol>
+
+<h2>4. Ejemplo de request: crear transferencia</h2>
+<pre>
+POST /v3/transfers
+Authorization: Bearer eyJhbGciOiJIUzI1NiIs...
+Content-Type: application/json
+
+{
+  "source_account_id": "acc_9f8d7a",
+  "destination_account_id": "acc_1b2c3d",
+  "amount": 250.00,
+  "currency": "USD",
+  "reference": "Pago factura #4521"
+}
+</pre>
+
+<h3>Respuesta esperada</h3>
+<pre>
+{
+  "transfer_id": "trf_7a8b9c",
+  "status": "pendiente",
+  "created_at": "2026-03-10T14:32:00Z"
+}
+</pre>
+
+<h2>5. Webhooks</h2>
+<p>Los partners pueden registrar una URL propia mediante <code>POST /webhooks</code> para recibir notificaciones en tiempo real. Eventos soportados:</p>
+<ul>
+  <li><code>transfer.completed</code></li>
+  <li><code>transfer.failed</code></li>
+  <li><code>account.created</code></li>
+</ul>
+<p>Cada notificación incluye una firma HMAC en el header <code>X-NubePay-Signature</code> que debe validarse contra el <code>webhook_secret</code> asignado, para confirmar la autenticidad del origen.</p>
+
+<h2>6. Rate limits</h2>
+<p>Cada endpoint tiene un límite de solicitudes por minuto (ver tabla de referencia técnica en <em>configuracion_endpoints_api.json</em>). Al superar el límite, la API responde con código <code>HTTP 429</code> y un header <code>Retry-After</code> indicando los segundos de espera recomendados.</p>
+
+<h2>7. Manejo de errores</h2>
+<p>Todos los errores siguen un formato estándar:</p>
+<pre>
+{
+  "error_code": "ERR-204",
+  "message": "Límite diario o mensual excedido",
+  "transfer_id": "trf_7a8b9c"
+}
+</pre>
+<p>La lista completa de códigos de error está documentada en el archivo de configuración de endpoints (<code>configuracion_endpoints_api.json</code>).</p>
+
+<h2>8. Ambientes disponibles</h2>
+<table border="1" cellpadding="6">
+  <tr><th>Ambiente</th><th>URL base</th><th>Uso</th></tr>
+  <tr><td>Sandbox</td><td>https://sandbox-api.nubepay.com/v3</td><td>Pruebas de integración, sin movimiento de fondos reales</td></tr>
+  <tr><td>Producción</td><td>https://api.nubepay.com/v3</td><td>Transacciones reales</td></tr>
+</table>
+
+<h2>9. Soporte</h2>
+<p>Para consultas técnicas de integración, contactar a <strong>api-support@nubepay.com</strong>. Para incidentes en producción, seguir el protocolo de escalamiento de Ingeniería de Guardia.</p>
+
+</body>
+</html>

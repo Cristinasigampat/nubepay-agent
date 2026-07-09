@@ -1,0 +1,21 @@
+id_cliente,nombre_completo,pais,plan,fecha_alta,estado_cuenta,nivel_kyc,saldo_promedio_usd,transacciones_ultimo_mes,canal_adquisicion
+NP-100001,Lucia Fernandez,Argentina,Verificado L2,2024-03-12,activa,2,1250.30,18,referido
+NP-100002,Carlos Ramirez,Mexico,Business,2023-11-02,activa,2,15400.00,64,marketing_digital
+NP-100003,Ana Torres,Colombia,Basico,2025-06-20,activa,0,80.50,3,app_store
+NP-100004,Jorge Salinas,Chile,Verificado L1,2024-08-15,activa,1,620.10,9,referido
+NP-100005,Maria Gomez,Argentina,Verificado L2,2022-05-30,suspendida,2,0.00,0,marketing_digital
+NP-100006,Pedro Alvarez,Mexico,Basico,2025-09-01,activa,0,45.00,2,app_store
+NP-100007,Sofia Herrera,Colombia,Verificado L1,2023-02-14,activa,1,980.75,12,referido
+NP-100008,Diego Castro,Chile,Business,2021-12-01,activa,2,42300.00,110,ventas_directas
+NP-100009,Valentina Ruiz,Argentina,Verificado L1,2024-01-22,activa,1,310.40,6,marketing_digital
+NP-100010,Martin Diaz,Mexico,Verificado L2,2023-07-19,activa,2,7650.20,35,referido
+NP-100011,Camila Vega,Colombia,Basico,2025-10-05,pendiente_verificacion,0,15.00,1,app_store
+NP-100012,Federico Lopez,Chile,Verificado L1,2024-04-11,activa,1,540.60,8,referido
+NP-100013,Julieta Molina,Argentina,Business,2022-09-08,activa,2,28900.00,88,ventas_directas
+NP-100014,Ricardo Nunez,Mexico,Basico,2025-11-30,cerrada,0,0.00,0,app_store
+NP-100015,Isabella Rojas,Colombia,Verificado L2,2023-05-27,activa,2,3200.90,22,marketing_digital
+NP-100016,Tomas Ortiz,Chile,Verificado L1,2024-06-03,activa,1,410.00,7,referido
+NP-100017,Emilia Suarez,Argentina,Basico,2025-08-14,activa,0,60.20,4,app_store
+NP-100018,Nicolas Paredes,Mexico,Verificado L2,2022-02-17,activa,2,9800.35,41,ventas_directas
+NP-100019,Renata Aguirre,Colombia,Business,2021-10-25,activa,2,55600.00,132,ventas_directas
+NP-100020,Santiago Medina,Chile,Verificado L1,2024-12-09,activa,1,275.80,5,referido
