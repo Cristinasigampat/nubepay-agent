@@ -1,0 +1,26 @@
+# Orquestación RAG
+langchain
+langchain-community
+langchain-text-splitters
+
+# Base vectorial
+chromadb
+langchain-chroma
+
+# Parsers de documentos
+pypdf
+python-docx
+pandas
+openpyxl
+python-pptx
+beautifulsoup4
+
+# Backend
+fastapi
+uvicorn
+
+# Frontend
+streamlit
+
+# Utilidades
+python-dotenv
