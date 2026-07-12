@@ -139,6 +139,13 @@ Mientras no se implemente la integración automática, el **owner de cada catego
 
 ---
 
-## 8. Próxima revisión
+## 8. Limitaciones conocidas del pipeline de extracción
+
+Decisiones de alcance tomadas conscientemente durante la Etapa 2 (procesamiento y extracción de contenido), documentadas aquí en vez de implementadas, dado el alcance de este proyecto:
+
+- **OCR para PDFs escaneados:** el parser de PDF (`leer_pdf()`) extrae texto directo, asumiendo que el PDF es nativo (generado digitalmente). No se implementó reconocimiento óptico de caracteres (OCR) para PDFs que sean imágenes escaneadas, ya que los 20 documentos de este proyecto son todos generados digitalmente. Si en el futuro se incorporan documentos escaneados a la base de conocimiento, este es el punto del pipeline a extender.
+- **Ubicación exacta dentro del documento (página, sección, diapositiva):** actualmente `leer_documento()` devuelve el texto completo de un documento como un único string, sin conservar en qué página, sección o diapositiva se originó cada fragmento. Esto significa que un chunk no puede citar "página 3" o "diapositiva 2" como fuente exacta, solo el nombre del documento de origen. Resolverlo requeriría rediseñar los parsers para devolver una lista de fragmentos con su ubicación, en vez de un string único — se dejó fuera del alcance actual por la complejidad que agrega frente al beneficio para un corpus de 20 documentos.
+
+## 9. Próxima revisión
 
 Este registro debe revisarse cada vez que se incorpore un documento nuevo a `docs/`, y como mínimo trimestralmente junto con los owners de cada categoría, para confirmar que ningún documento haya quedado desactualizado.

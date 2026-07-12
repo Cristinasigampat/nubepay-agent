@@ -16,9 +16,9 @@ import pandas as pd
 from pptx import Presentation
 from bs4 import BeautifulSoup
 import json
+import re
 
-#Recibe un parámetro ruta y retorna un string
-#abrís el archivo en modo lectura ("r"), con codificación UTF-8 (para las tildes), y el with se encarga de cerrarlo solo.
+
 def leer_texto_plano(ruta: Path) -> str:
     """Lee archivos que ya son texto plano: Markdown (.md), texto (.txt)."""
     with open(ruta, "r", encoding="utf-8") as archivo:
@@ -34,8 +34,6 @@ def leer_pdf(ruta: Path) -> str:
     return texto
 
 
-
-#abrís el documento, acumulás texto recorriendo cada párrafo, devolvés el total
 def leer_word(ruta: Path) -> str:
     """Extrae el texto de todos los párrafos de un documento Word."""
     documento = Document(ruta)
@@ -45,27 +43,54 @@ def leer_word(ruta: Path) -> str:
     return texto
 
 
-#tabla.to_string(index=False) es un método de pandas que convierte toda la tabla en un string de texto (en vez de mostrarla como tabla visual)
 def leer_excel(ruta: Path) -> str:
-    """Convierte una hoja de Excel a texto, fila por fila."""
-    tabla = pd.read_excel(ruta)
-    return tabla.to_string(index=False)
+    """
+    Convierte una hoja de Excel a texto, UNA LÍNEA POR FILA, repitiendo
+    el nombre de cada columna junto a su valor. Esto evita que, al trocear
+    la tabla en varios chunks, se pierda de vista a qué columna
+    corresponde cada número (algo que SÍ pasaba con to_string()).
+
+    Nota: nuestros archivos de Excel tienen 2 filas de título + 1 fila
+    vacía antes del encabezado real de la tabla (fila 4). Por eso usamos
+    header=3 (índice 0, o sea la 4ta fila) para que pandas identifique
+    bien los nombres de columna reales, en vez de inventar columnas
+    "Unnamed: 1", "Unnamed: 2", etc.
+    """
+    tabla = pd.read_excel(ruta, header=3)
+    lineas = []
+    for _, fila in tabla.iterrows():
+        partes = [f"{columna}: {valor}" for columna, valor in fila.items()]
+        lineas.append(" | ".join(partes))
+    return "\n".join(lineas)
 
 
 def leer_csv(ruta: Path) -> str:
-    """Convierte un CSV a texto, fila por fila."""
+    """Convierte un CSV a texto, una línea por fila (mismo criterio que leer_excel)."""
     tabla = pd.read_csv(ruta)
-    return tabla.to_string(index=False)
+    lineas = []
+    for _, fila in tabla.iterrows():
+        partes = [f"{columna}: {valor}" for columna, valor in fila.items()]
+        lineas.append(" | ".join(partes))
+    return "\n".join(lineas)
 
 
 def leer_powerpoint(ruta: Path) -> str:
-    """Extrae el texto de todas las cajas de texto de todas las diapositivas."""
+    """
+    Extrae el texto de todas las cajas de texto de todas las diapositivas,
+    y también las notas del orador (que suelen tener contexto adicional
+    importante, no visible en la diapositiva en sí).
+    """
     presentacion = Presentation(ruta)
     texto = ""
     for diapositiva in presentacion.slides:
         for forma in diapositiva.shapes:
             if forma.has_text_frame:
                 texto += forma.text_frame.text + "\n"
+
+        if diapositiva.has_notes_slide:
+            notas = diapositiva.notes_slide.notes_text_frame.text
+            if notas.strip():  # solo agregamos si la nota no está vacía
+                texto += f"[Notas del orador: {notas}]\n"
     return texto
 
 
@@ -76,8 +101,7 @@ def leer_html(ruta: Path) -> str:
     sopa = BeautifulSoup(contenido, "html.parser")
     return sopa.get_text()
 
-#json.load(archivo) →  convierte el JSON en un diccionario de Python.
-#json.dumps() — es literalmente lo opuesto de json.load(): agarra un diccionario de Python y lo convierte en un string con formato JSON.
+
 def leer_json(ruta: Path) -> str:
     """Lee un JSON y lo devuelve como texto legible (no como diccionario)."""
     with open(ruta, "r", encoding="utf-8") as archivo:
@@ -86,34 +110,47 @@ def leer_json(ruta: Path) -> str:
     return json.dumps(datos, indent=2, ensure_ascii=False)
 
 
+def limpiar_texto(texto: str) -> str:
+    """
+    Limpia "ruido" común en el texto extraído: espacios/tabs repetidos,
+    y más de 2 saltos de línea seguidos (que suelen aparecer como
+    residuo de la extracción, sobre todo en PDF).
+    """
+    texto = re.sub(r"[ \t]+", " ", texto)       # varios espacios/tabs -> uno solo
+    texto = re.sub(r"\n{3,}", "\n\n", texto)    # 3+ saltos de línea seguidos -> 2
+    return texto.strip()                         # saca espacios en blanco al principio/final
+
+
 # --- El "router": decide qué función usar según la extensión del archivo ---
 
 def leer_documento(ruta: Path) -> str:
     """
     Función principal: recibe la ruta de CUALQUIER documento soportado
-    y devuelve su texto, sin que quien la llama tenga que saber de qué
-    formato se trata.
+    y devuelve su texto YA LIMPIO, sin que quien la llama tenga que
+    saber de qué formato se trata ni preocuparse por la limpieza.
     """
     extension = ruta.suffix.lower()  # .lower() para que no importe si es .PDF o .pdf
 
     if extension == ".pdf":
-        return leer_pdf(ruta)
+        texto = leer_pdf(ruta)
     elif extension == ".docx":
-        return leer_word(ruta)
+        texto = leer_word(ruta)
     elif extension == ".xlsx":
-        return leer_excel(ruta)
+        texto = leer_excel(ruta)
     elif extension == ".csv":
-        return leer_csv(ruta)
+        texto = leer_csv(ruta)
     elif extension == ".pptx":
-        return leer_powerpoint(ruta)
+        texto = leer_powerpoint(ruta)
     elif extension == ".html":
-        return leer_html(ruta)
+        texto = leer_html(ruta)
     elif extension == ".json":
-        return leer_json(ruta)
+        texto = leer_json(ruta)
     elif extension == ".md":
-        return leer_texto_plano(ruta)
+        texto = leer_texto_plano(ruta)
     else:
         raise ValueError(f"Formato no soportado: {extension} (archivo: {ruta.name})")
+
+    return limpiar_texto(texto)
 
 
 # --- Prueba rápida del módulo ---
