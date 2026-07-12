@@ -43,3 +43,7 @@ build/
 
 # --- Carpeta de práctica personal (no se sube al repo) ---
 src/practica/
+
+# --- Modelos de embeddings descargados localmente ---
+.cache/
+models/

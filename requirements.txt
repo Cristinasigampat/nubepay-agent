@@ -3,6 +3,9 @@ langchain
 langchain-community
 langchain-text-splitters
 
+# Embeddings (modelo local)
+sentence-transformers
+
 # Base vectorial
 chromadb
 langchain-chroma
