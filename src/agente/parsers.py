@@ -10,7 +10,7 @@ Uso típico desde otro archivo:
 """
 
 from pathlib import Path
-from pypdf import PdfReader
+import pdfplumber
 from docx import Document
 import pandas as pd
 from pptx import Presentation
@@ -26,11 +26,58 @@ def leer_texto_plano(ruta: Path) -> str:
 
 
 def leer_pdf(ruta: Path) -> str:
-    """Extrae el texto de todas las páginas de un PDF."""
-    lector = PdfReader(ruta)
+    """
+    Extrae el texto de todas las páginas de un PDF, reemplazando cada
+    tabla detectada (en su posición original dentro de la página) por
+    su versión reformateada como "Columna: valor" -- mismo criterio
+    que ya usamos en leer_excel(), leer_csv() y
+    reformatear_tablas_markdown().
+ 
+    Sin esto, el texto de una tabla en PDF sale como una lista de
+    etiquetas seguida de una lista de valores, sin ningún separador
+    que indique qué valor corresponde a qué fila -- confirmado que
+    esto genera respuestas incorrectas del LLM (Clase 7). Y si la
+    tabla reformateada se agrega solo al FINAL de la página (en vez
+    de en su lugar), puede quedar demasiado lejos del texto que la
+    rodea como para terminar en el mismo chunk -- también confirmado
+    con datos reales.
+    """
     texto = ""
-    for pagina in lector.pages:
-        texto += pagina.extract_text() + "\n"
+    with pdfplumber.open(ruta) as pdf:
+        for pagina in pdf.pages:
+            tablas_obj = sorted(pagina.find_tables(), key=lambda t: t.bbox[1])
+ 
+            if not tablas_obj:
+                texto += (pagina.extract_text() or "") + "\n"
+                continue
+ 
+            cursor_y = 0
+            for tabla_obj in tablas_obj:
+                _, top, _, bottom = tabla_obj.bbox
+ 
+                # Texto que va ANTES de esta tabla (desde donde quedamos, hasta el inicio de la tabla)
+                recorte_antes = pagina.crop((0, cursor_y, pagina.width, top))
+                texto += (recorte_antes.extract_text() or "") + "\n"
+ 
+                # La tabla, reformateada como "Columna: valor"
+                datos_tabla = tabla_obj.extract()
+                if datos_tabla and len(datos_tabla) >= 2:
+                    encabezados = datos_tabla[0]
+                    for fila in datos_tabla[1:]:
+                        partes = [
+                            f"{encabezado}: {valor}"
+                            for encabezado, valor in zip(encabezados, fila)
+                            if encabezado and valor
+                        ]
+                        if partes:
+                            texto += " | ".join(partes) + "\n"
+ 
+                cursor_y = bottom
+ 
+            # Texto que queda DESPUÉS de la última tabla de la página
+            recorte_despues = pagina.crop((0, cursor_y, pagina.width, pagina.height))
+            texto += (recorte_despues.extract_text() or "") + "\n"
+ 
     return texto
 
 

@@ -12,7 +12,7 @@ chromadb
 langchain-chroma
 
 # Parsers de documentos
-pypdf
+pdfplumber
 python-docx
 pandas
 openpyxl

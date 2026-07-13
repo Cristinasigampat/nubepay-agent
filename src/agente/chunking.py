@@ -69,7 +69,7 @@ if __name__ == "__main__":
 
     documentos_de_prueba = [
         ("docs/operacional/FAQ_transacciones_y_limites.md", "operacional"),
-        ("docs/legal_compliance/Terminos_y_condiciones_de_uso.docx", "legal_compliance"),
+        ("docs/rh/Politica_de_beneficios_y_vacaciones.pdf", "rh"),
     ]
 
     for doc_relativo, categoria in documentos_de_prueba:
@@ -82,3 +82,26 @@ if __name__ == "__main__":
         print(f"  Categoría: {categoria} -> chunk_size={chunk_size}, chunk_overlap={chunk_overlap}")
         print(f"  Caracteres totales: {len(texto)} -> {len(chunks)} chunks generados")
         print()
+          # --- Inspección detallada: el PDF de vacaciones, chunk por chunk completo ---
+    # (lo separamos del loop de arriba porque acá queremos ver el CONTENIDO
+    # completo de cada chunk, no solo un resumen -- útil para diagnosticar
+    # si una sección importante queda bien contenida en un solo chunk o
+    # se mezcla con otras secciones que no tienen relación).
+    print("=" * 60)
+    print("Inspección detallada: Política de Beneficios y Vacaciones")
+    print("=" * 60)
+ 
+    ruta_vacaciones = raiz_del_proyecto / "docs" / "rh" / "Politica_de_beneficios_y_vacaciones.pdf"
+    texto_vacaciones = leer_documento(ruta_vacaciones)
+    chunks_vacaciones = trocear_documento(texto_vacaciones, categoria="rh")
+ 
+    chunk_size, chunk_overlap = obtener_configuracion_chunking("rh")
+    print(f"Configuración: chunk_size={chunk_size}, chunk_overlap={chunk_overlap}")
+    print(f"Cantidad de chunks generados: {len(chunks_vacaciones)}")
+    print()
+ 
+    for i, chunk in enumerate(chunks_vacaciones):
+        print(f"--- Chunk {i} ({len(chunk)} caracteres) ---")
+        print(chunk)
+        print()
+ 
