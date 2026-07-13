@@ -13,7 +13,7 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 CONFIGURACION_POR_CATEGORIA = {
     "legal_compliance": (1000, 100),      # políticas largas, ideas desarrolladas en varias oraciones
     "financiero": (600, 60),               # mezcla de texto y datos de tablas
-    "rh": (800, 80),
+    "rh": (1000, 150),
     "estrategico": (800, 80),
     "operacional": (500, 50),              # incluye FAQ, chunks más chicos
     "datos_sistemas": (500, 50),
