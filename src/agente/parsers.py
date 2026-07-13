@@ -109,6 +109,53 @@ def leer_json(ruta: Path) -> str:
     # json.dumps convierte el diccionario de vuelta a texto, pero prolijo e indentado
     return json.dumps(datos, indent=2, ensure_ascii=False)
 
+def reformatear_tablas_markdown(texto: str) -> str:
+    """
+    Detecta tablas escritas en formato Markdown (con | y una fila de
+    guiones separadora) y las convierte a una línea por fila, con cada
+    valor pegado al nombre de su columna -- el mismo criterio que ya
+    usamos en leer_excel() y leer_csv(). Esto evita que un LLM confunda
+    a qué columna corresponde cada número.
+ 
+    Ejemplo de entrada:
+        | Plan | Límite diario | Límite mensual |
+        |------|-----------------|-----------------|
+        | Básico | USD 150 | USD 1.000 |
+ 
+    Ejemplo de salida:
+        Plan: Básico | Límite diario: USD 150 | Límite mensual: USD 1.000
+    """
+    lineas = texto.split("\n")
+    resultado = []
+    i = 0
+ 
+    while i < len(lineas):
+        linea_actual = lineas[i].strip()
+        es_posible_encabezado = linea_actual.startswith("|") and linea_actual.endswith("|")
+ 
+        hay_separador_despues = False
+        if es_posible_encabezado and i + 1 < len(lineas):
+            siguiente = lineas[i + 1].strip()
+            hay_separador_despues = bool(re.match(r"^\|[\s:\-|]+\|$", siguiente))
+ 
+        if es_posible_encabezado and hay_separador_despues:
+            # Encontramos una tabla: leemos el encabezado
+            columnas = [c.strip() for c in linea_actual.strip("|").split("|")]
+            i += 2  # saltamos el encabezado y la fila de guiones
+ 
+            # Procesamos cada fila de datos, mientras sigan empezando con "|"
+            while i < len(lineas) and lineas[i].strip().startswith("|"):
+                valores = [v.strip() for v in lineas[i].strip().strip("|").split("|")]
+                partes = [f"{col}: {val}" for col, val in zip(columnas, valores)]
+                resultado.append(" | ".join(partes))
+                i += 1
+        else:
+            # No es parte de una tabla: dejamos la línea tal cual
+            resultado.append(lineas[i])
+            i += 1
+ 
+    return "\n".join(resultado)
+
 
 def limpiar_texto(texto: str) -> str:
     """
@@ -146,7 +193,7 @@ def leer_documento(ruta: Path) -> str:
     elif extension == ".json":
         texto = leer_json(ruta)
     elif extension == ".md":
-        texto = leer_texto_plano(ruta)
+        texto = reformatear_tablas_markdown(leer_texto_plano(ruta))
     else:
         raise ValueError(f"Formato no soportado: {extension} (archivo: {ruta.name})")
 
