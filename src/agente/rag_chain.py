@@ -7,12 +7,16 @@ genera la respuesta con el LLM, y arma la lista de fuentes citadas de
 forma confiable (en código, sin depender de que el LLM la recuerde bien).
 """
 
+import os
 from pathlib import Path
+from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import PromptTemplate
 
 from vectorstore import obtener_coleccion, buscar
 from reranking import rerank
+
+load_dotenv() # lee el archivo .env (si existe) y carga las variables
 
 # Umbral de confianza para el score del reranker. Después de varias rondas
 # de calibración (Clases 7-8), confirmamos que un solo número no puede
@@ -78,14 +82,28 @@ Respuesta:"""
 
 raiz_del_proyecto = Path(__file__).parent.parent.parent
 
+# Elegimos el LLM según en qué entorno estemos corriendo:
+# - "local" (default): LM Studio, en PC.
+# - "produccion": Gemini, para cuando el agente corre en la nube.
+ENTORNO = os.getenv("ENTORNO", "local")
+
+if ENTORNO == "produccion":
+    llm = ChatOpenAI(
+        base_url="https://generativelanguage.googleapis.com/v1beta/openai/",
+        api_key=os.getenv("GEMINI_API_KEY"),
+        model="gemini-3.1-flash-lite",
+        temperature=0.3,
+    )
+else:
 # Cargamos el LLM y la conexión a Chroma UNA SOLA VEZ, al importar el módulo
-# (mismo criterio que ya usamos en embeddings.py y reranking.py).
-llm = ChatOpenAI(
-    base_url="http://localhost:1234/v1",
-    api_key="lm-studio",
-    model="gemma-3-4b-it",
-    temperature=0.3,
-)
+    llm = ChatOpenAI(
+        base_url="http://localhost:1234/v1",
+        api_key="lm-studio",
+        model="gemma-3-4b-it",
+        temperature=0.3,
+    )
+
+
 coleccion = obtener_coleccion(raiz_del_proyecto / "chroma_db")
 
 
@@ -195,10 +213,10 @@ if __name__ == "__main__":
 
     preguntas_de_prueba = [
         "¿Cuánto puedo transferir por día?",
-        "¿NubePay tiene oficinas físicas en Miami?",
-        "¿Cuál es la capital de Argentina?",
-        "¿Para solicitar vacaciones necesito autorización?",
-        "¿Cuantos días de vacaciones me corresponden si tengo 1 año de antigüedad?",
+      #  "¿NubePay tiene oficinas físicas en Miami?",
+      #  "¿Cuál es la capital de Argentina?",
+       ## "¿Para solicitar vacaciones necesito autorización?",
+       # "¿Cuantos días de vacaciones me corresponden si tengo 1 año de antigüedad?",
     ]
 
     for pregunta in preguntas_de_prueba:
