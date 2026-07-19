@@ -181,7 +181,6 @@ with st.sidebar:
     st.image("assets/logo_transparente.png", width=140)
 
     st.caption("Agente de conocimiento interno")
-    st.caption(f"v{VERSION_AGENTE}")
 
     #Filtros 
     categoria_seleccionada = st.selectbox("Filtrar por área", CATEGORIAS)
@@ -190,13 +189,19 @@ with st.sidebar:
         st.session_state.historial = []
 
 
-    # Contenedor para el personaje (lo llamamos clase "robot-container")
-    st.markdown('<div class="spacer"></div>', unsafe_allow_html=True)
-    
-    st.markdown('<div class="robot-container">', unsafe_allow_html=True)
-    st.image("assets/agente_nubepay.png", width=250)
-    st.markdown('</div>', unsafe_allow_html=True)  
+    with st.sidebar.container(key="sidebar_bottom"):
+        st.image("assets/agente_nubepay.png")
+        st.caption(f"v{VERSION_AGENTE}")
 
+    st.html("""
+    <style>
+        .st-key-sidebar_bottom {
+            position: absolute;
+            bottom: 5px;
+            width: 400px !important;
+        }
+    </style>
+    """)
 
 
 

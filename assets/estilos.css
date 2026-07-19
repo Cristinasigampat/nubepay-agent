@@ -27,6 +27,17 @@
     background-color: transparent !important;
 }
 
+
+/* Aplicamos el bloqueo de scroll al contenedor raíz e interno de la barra lateral */
+[data-testid="stSidebar"],
+[data-testid="stSidebarUserContent"], [data-testid="stSidebarContent"] {
+    overflow-y: hidden !important; 
+    overflow-x: hidden !important;
+    -ms-overflow-style: none !important;  
+    scrollbar-width: none !important;     
+}
+
+
 /* --- Centrar TODAS las imágenes de la sidebar (logo + robot) ---
    Hacía falta ESTA regla además de la de abajo: el contenedor vertical
    de la sidebar (stVerticalBlock) tiene align-items:start por defecto
@@ -36,30 +47,42 @@
     align-items: center;
 }
 
-[data-testid="stImageContainer"] {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-}
+
+
+
+
 
 /* --- Imagen del logo: la agrandamos un poco (era 140px por defecto) --- */
-[data-testid="stSidebar"] [data-testid="stImageContainer"] img {
+[data-testid="stSidebar"] [data-testid="stImageContainer"]:not(.st-key-sidebar_bottom *) img {
     width: 200px !important;
     height: auto !important;
 }
 
-/* --- Imagen del ROBOT específicamente (el último elemento agregado a
-   la sidebar): más grande que el logo, con % en vez de un número fijo
-   para que nunca se corte, sin importar el ancho exacto de la sidebar. --- */
-[data-testid="stSidebarUserContent"] > [data-testid="stElementContainer"]:last-child img {
-    width: 95% !important;
-    max-width: 300px !important;
+
+[data-testid="stSidebar"] .st-key-sidebar_bottom [data-testid="stImageContainer"] img {
+    width: 440px !important; /* Ajusta este valor a gusto (500px rompería la sidebar de 400px) */
     height: auto !important;
 }
 
-/* --- Imagen del agente: queda con tamaño/posición por defecto de
-   Streamlit -- ya centrada por la regla de arriba. Se prioriza avanzar
-   con Docker/OCI dado el tiempo disponible antes de la entrega. --- */
+
+/* Contenedor del personaje abajo */
+.st-key-sidebar_bottom {
+    position: absolute;
+    bottom: 15px; /* Un poco más de margen para que no toque el borde inferior */
+    width: 100% !important; 
+    left: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 99;
+}
+
+
+
+
+
+
 
 /* --- Texto de la sidebar: como el fondo ahora es claro, usamos texto navy.
    Con !important para que gane incluso si un componente puntual (como
@@ -67,6 +90,8 @@
 [data-testid="stSidebar"] * {
     color: #062e5d !important;
 }
+
+
 
 /* El selectbox necesita su propio fondo blanco para que el texto se lea */
 [data-testid="stSidebar"] [data-baseweb="select"] {
