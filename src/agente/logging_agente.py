@@ -32,6 +32,32 @@ def registrar_ejecucion(pregunta: str, resultado: dict, tiempo_ms: float) -> Non
     with open(RUTA_LOG, "a", encoding="utf-8") as archivo:
         archivo.write(json.dumps(entrada, ensure_ascii=False) + "\n")
 
+        
+
+def registrar_feedback(pregunta: str, respuesta: str, feedback: str) -> None:
+    """
+    Guarda una línea de log cuando un colaborador califica una respuesta
+    con 👍 (feedback="positivo") o 👎 (feedback="negativo") -- esto
+    alimenta el "Monitoreo de calidad" que pide el desafío.
+    """
+    RUTA_LOG.parent.mkdir(parents=True, exist_ok=True)
+ 
+    entrada = {
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "tipo": "feedback",
+        "pregunta": pregunta,
+        "respuesta": respuesta,
+        "feedback": feedback,
+    }
+ 
+    with open(RUTA_LOG, "a", encoding="utf-8") as archivo:
+        archivo.write(json.dumps(entrada, ensure_ascii=False) + "\n")
+
+
+
+
+
+
 
 # --- Prueba rápida del módulo ---
 if __name__ == "__main__":

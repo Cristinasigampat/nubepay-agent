@@ -19,7 +19,7 @@ from logging_agente import registrar_ejecucion
 
 app = FastAPI(
     title="Agente NubePay ☁️💸​​",
-    description="Agente de IA corporativo de NubePay -- responde preguntas de colaboradores basándose en la documentación interna.",
+    description="Agente de IA corporativo de NubePay ** Responde preguntas de colaboradores basándose en la documentación interna.",
 )
 
 

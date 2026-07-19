@@ -1,0 +1,71 @@
+/* =========================================================
+   estilos.css — Estilos visuales del frontend de NubePay
+   Separado del código Python para poder ajustar colores,
+   tipografía, etc. sin tocar la lógica de app_chat.py.
+   ========================================================= */
+
+/* --- PASO 1: el degradé real se pinta UNA SOLA VEZ, acá --- */
+[data-testid="stAppViewContainer"] {
+    background: linear-gradient(135deg, #BFE0F5 0%, #E8EEF9 45%, #F7DCE6 100%) !important;
+}
+
+/* --- PASO 2: todo lo demás queda TRANSPARENTE, para que se vea
+   el degradé de arriba a través suyo, sin que cada uno pinte el
+   suyo propio (eso es lo que generaba los "cortes" feos) --- */
+[data-testid="stHeader"],
+[data-testid="stSidebar"],
+[data-testid^="stBottom"] {
+    background: transparent !important;
+    background-color: transparent !important;
+}
+
+/* El div interno de stBottom no tiene su propio data-testid, pero
+   sabemos que es su HIJO DIRECTO -- lo apuntamos por estructura
+   (el símbolo ">") en vez de depender de su clase autogenerada,
+   que cambia con cada build de Streamlit. */
+[data-testid="stBottom"] > div {
+    background-color: transparent !important;
+}
+
+/* --- Texto de la sidebar: como el fondo ahora es claro, usamos texto navy --- */
+[data-testid="stSidebar"] * {
+    color: #d4dfea;
+}
+
+/* El selectbox necesita su propio fondo blanco para que el texto se lea */
+[data-testid="stSidebar"] [data-baseweb="select"] {
+    background-color: #FFFFFF;
+}
+
+/* --- Botón "Nueva conversación" --- */
+[data-testid="stSidebar"] button {
+    background-color: #244468 !important;
+    color: #FBEAF0 !important;
+    border: none !important;
+}
+
+/* --- Caja de escribir el mensaje: fondo blanco, para que resalte --- */
+[data-testid="stChatInput"],
+[data-testid="stChatInput"] textarea {
+   /* background-color: #FFFFFF !important;*/
+    color: #f0e9e9 !important;
+   /* border: 0.5px solid #B4B2A9 !important;*/
+}
+
+/** -- Cambiar color del spinner y el texto cuando esta buscando información ---*/
+[data-testid="stSpinner"] svg,
+[data-testid="stSpinnerIcon"],
+[data-testid="stSpinner"] * {
+    color: #0C447C !important;
+    fill: #0C447C !important;
+    stroke: #0C447C !important;
+}
+
+
+/* --- Ocultar el botón de "pantalla completa" que Streamlit agrega
+   automáticamente arriba de las imágenes --- */
+[data-testid="stElementToolbar"] {
+    display: none !important;
+}
+
+
