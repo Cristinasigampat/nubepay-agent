@@ -19,14 +19,15 @@ from pathlib import Path
 import base64
 import sys
 import re
+import time
 import streamlit as st
-import requests
 from html import escape as escapar_html
 
 sys.path.append(str(Path(__file__).parent))
-from logging_agente import registrar_feedback
+from logging_agente import registrar_feedback, registrar_ejecucion
+from rag_chain import responder
 
-URL_API = "http://localhost:8000/preguntar"
+#URL_API = "http://localhost:8000/preguntar"
 RAIZ_DEL_PROYECTO = Path(__file__).parent.parent.parent
 
 # Versión del agente -- mismo número que en api.py y en el tag de Git.
@@ -243,18 +244,18 @@ if pregunta_usuario:
     categoria_para_api = None if categoria_seleccionada == "Todas las áreas" else categoria_seleccionada
 
     with st.spinner("Espera, Nuby está trabajando..."):
+        inicio_tiempo = time.time()
         try:
-            respuesta_http = requests.post(
-                URL_API,
-                json={"pregunta": pregunta_usuario, "categoria": categoria_para_api},
-                timeout=60,
-            )
-            datos = respuesta_http.json()
-            texto_respuesta = datos["respuesta"]
-            fuentes = datos["fuentes"]
-        except requests.exceptions.RequestException:
-            texto_respuesta = "No pude conectarme con el agente. ¿Está corriendo el backend (uvicorn)?"
+            resultado = responder(pregunta_usuario, categoria=categoria_para_api)
+            texto_respuesta = resultado["respuesta"]
+            fuentes = resultado["fuentes"]
+        except Exception as error:
+            texto_respuesta = f"Ocurrió un error al procesar tu pregunta: {error}"
             fuentes = ""
+            resultado = {"respuesta": texto_respuesta, "fuentes": "", "hubo_fallback": True}
+
+        tiempo_ms = (time.time() - inicio_tiempo) * 1000
+        registrar_ejecucion(pregunta_usuario, resultado, tiempo_ms)
 
     st.session_state.historial.append({
         "rol": "assistant",

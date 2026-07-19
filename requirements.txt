@@ -26,7 +26,6 @@ uvicorn
 # Frontend
 streamlit
 requests
-streamlit-chat
 
 # Utilidades
 python-dotenv
