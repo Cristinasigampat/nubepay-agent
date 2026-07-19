@@ -178,7 +178,7 @@ def mostrar_feedback(indice: int, pregunta: str, respuesta: str) -> None:
 
 # --- Barra lateral ---
 with st.sidebar:
-    st.image("assets/logo_transparente.png", width=140)
+    st.image("assets/logo_transparente.png")
 
     st.caption("Agente de conocimiento interno")
 
