@@ -179,16 +179,27 @@ def mostrar_feedback(indice: int, pregunta: str, respuesta: str) -> None:
 # --- Barra lateral ---
 with st.sidebar:
     st.image("assets/logo_transparente.png", width=140)
+
     st.caption("Agente de conocimiento interno")
     st.caption(f"v{VERSION_AGENTE}")
 
+    #Filtros 
     categoria_seleccionada = st.selectbox("Filtrar por área", CATEGORIAS)
 
     if st.button("Nueva conversación", help="Borra el historial del chat y empieza una conversación nueva"):
         st.session_state.historial = []
 
-    # --- Imagen del personaje del agente ---
+
+    # Contenedor para el personaje (lo llamamos clase "robot-container")
+    st.markdown('<div class="spacer"></div>', unsafe_allow_html=True)
+    
+    st.markdown('<div class="robot-container">', unsafe_allow_html=True)
     st.image("assets/agente_nubepay.png", width=250)
+    st.markdown('</div>', unsafe_allow_html=True)  
+
+
+
+
 
 
 # --- Memoria del chat ---

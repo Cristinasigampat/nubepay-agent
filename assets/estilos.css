@@ -27,9 +27,45 @@
     background-color: transparent !important;
 }
 
-/* --- Texto de la sidebar: como el fondo ahora es claro, usamos texto navy --- */
+/* --- Centrar TODAS las imágenes de la sidebar (logo + robot) ---
+   Hacía falta ESTA regla además de la de abajo: el contenedor vertical
+   de la sidebar (stVerticalBlock) tiene align-items:start por defecto
+   (alinea todo a la izquierda), y eso le ganaba al justify-content:center
+   de stImageContainer. */
+[data-testid="stSidebar"] [data-testid="stVerticalBlock"] {
+    align-items: center;
+}
+
+[data-testid="stImageContainer"] {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+/* --- Imagen del logo: la agrandamos un poco (era 140px por defecto) --- */
+[data-testid="stSidebar"] [data-testid="stImageContainer"] img {
+    width: 200px !important;
+    height: auto !important;
+}
+
+/* --- Imagen del ROBOT específicamente (el último elemento agregado a
+   la sidebar): más grande que el logo, con % en vez de un número fijo
+   para que nunca se corte, sin importar el ancho exacto de la sidebar. --- */
+[data-testid="stSidebarUserContent"] > [data-testid="stElementContainer"]:last-child img {
+    width: 95% !important;
+    max-width: 300px !important;
+    height: auto !important;
+}
+
+/* --- Imagen del agente: queda con tamaño/posición por defecto de
+   Streamlit -- ya centrada por la regla de arriba. Se prioriza avanzar
+   con Docker/OCI dado el tiempo disponible antes de la entrega. --- */
+
+/* --- Texto de la sidebar: como el fondo ahora es claro, usamos texto navy.
+   Con !important para que gane incluso si un componente puntual (como
+   st.caption) trae su propio color por defecto. --- */
 [data-testid="stSidebar"] * {
-    color: #d8dee5;
+    color: #062e5d !important;
 }
 
 /* El selectbox necesita su propio fondo blanco para que el texto se lea */
@@ -44,12 +80,10 @@
     border: none !important;
 }
 
-/* --- Caja de escribir el mensaje: fondo blanco, para que resalte --- */
+/* --- Caja de escribir el mensaje --- */
 [data-testid="stChatInput"],
 [data-testid="stChatInput"] textarea {
-   /* background-color: #FFFFFF !important;*/
     color: #f0e9e9 !important;
-   /* border: 0.5px solid #B4B2A9 !important;*/
 }
 
 /** -- Cambiar color del spinner y el texto cuando esta buscando información ---*/
@@ -61,11 +95,8 @@
     stroke: #0C447C !important;
 }
 
-
 /* --- Ocultar el botón de "pantalla completa" que Streamlit agrega
    automáticamente arriba de las imágenes --- */
 [data-testid="stElementToolbar"] {
     display: none !important;
 }
-
-
