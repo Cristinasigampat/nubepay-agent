@@ -178,17 +178,33 @@ def mostrar_feedback(indice: int, pregunta: str, respuesta: str) -> None:
 
 # --- Barra lateral ---
 with st.sidebar:
-    st.image("assets/logo_transparente.png", width=140)
-    st.caption("Agente de conocimiento interno")
-    st.caption(f"v{VERSION_AGENTE}")
+    st.image("assets/logo_transparente.png")
 
+    st.caption("Agente de conocimiento interno")
+
+    #Filtros 
     categoria_seleccionada = st.selectbox("Filtrar por área", CATEGORIAS)
 
     if st.button("Nueva conversación", help="Borra el historial del chat y empieza una conversación nueva"):
         st.session_state.historial = []
 
-    # --- Imagen del personaje del agente ---
-    st.image("assets/agente_nubepay.png", width=250)
+
+    with st.sidebar.container(key="sidebar_bottom"):
+        st.image("assets/agente_nubepay.png")
+        st.caption(f"v{VERSION_AGENTE}")
+
+    st.html("""
+    <style>
+        .st-key-sidebar_bottom {
+            position: absolute;
+            bottom: 5px;
+            width: 400px !important;
+        }
+    </style>
+    """)
+
+
+
 
 
 # --- Memoria del chat ---
