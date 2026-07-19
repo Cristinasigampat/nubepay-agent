@@ -47,3 +47,6 @@ src/practica/
 # --- Modelos de embeddings descargados localmente ---
 .cache/
 models/
+
+#-- logs
+logs/
