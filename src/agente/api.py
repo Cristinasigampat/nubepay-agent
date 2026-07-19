@@ -17,9 +17,15 @@ sys.path.append(str(Path(__file__).parent))
 from rag_chain import responder
 from logging_agente import registrar_ejecucion
 
+#Versión del agente -- subimos este número (siguiendo versionado semántico:
+# MAYOR.MENOR.PARCHE) cada vez que hacemos un release importante, y lo
+# reflejamos también en un tag de Git (ver Plan_de_clases_RAG.md).
+VERSION_AGENTE = "1.0.0"
+
 app = FastAPI(
     title="Agente NubePay ☁️💸​​",
     description="Agente de IA corporativo de NubePay ** Responde preguntas de colaboradores basándose en la documentación interna.",
+    version=VERSION_AGENTE,
 )
 
 
@@ -38,7 +44,7 @@ class RespuestaResponse(BaseModel):
 
 @app.get("/")
 def inicio():
-    return {"mensaje": "Agente NubePay activo. Visitá /docs para probar los endpoints."}
+    return {"mensaje": "Agente NubePay activo. Visitá /docs para probar los endpoints.", "version": VERSION_AGENTE}
 
 
 @app.post("/preguntar", response_model=RespuestaResponse)

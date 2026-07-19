@@ -29,7 +29,7 @@
 
 /* --- Texto de la sidebar: como el fondo ahora es claro, usamos texto navy --- */
 [data-testid="stSidebar"] * {
-    color: #d4dfea;
+    color: #d8dee5;
 }
 
 /* El selectbox necesita su propio fondo blanco para que el texto se lea */

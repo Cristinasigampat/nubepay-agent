@@ -29,6 +29,9 @@ from logging_agente import registrar_feedback
 URL_API = "http://localhost:8000/preguntar"
 RAIZ_DEL_PROYECTO = Path(__file__).parent.parent.parent
 
+# Versión del agente -- mismo número que en api.py y en el tag de Git.
+VERSION_AGENTE = "1.0.0"
+
 CATEGORIAS = [
     "Todas las áreas", "legal_compliance", "financiero", "rh", "estrategico",
     "operacional", "datos_sistemas", "calidad", "comunicacion_interna",
@@ -177,6 +180,7 @@ def mostrar_feedback(indice: int, pregunta: str, respuesta: str) -> None:
 with st.sidebar:
     st.image("assets/logo_transparente.png", width=140)
     st.caption("Agente de conocimiento interno")
+    st.caption(f"v{VERSION_AGENTE}")
 
     categoria_seleccionada = st.selectbox("Filtrar por área", CATEGORIAS)
 
@@ -222,7 +226,7 @@ if pregunta_usuario:
 
     categoria_para_api = None if categoria_seleccionada == "Todas las áreas" else categoria_seleccionada
 
-    with st.spinner("Buscando en la documentación..."):
+    with st.spinner("Espera, Nuby está trabajando..."):
         try:
             respuesta_http = requests.post(
                 URL_API,
