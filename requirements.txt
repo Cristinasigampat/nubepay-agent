@@ -6,6 +6,7 @@ langchain-openai
 
 # Embeddings (modelo local)
 sentence-transformers
+torchvision
 
 # Base vectorial
 chromadb

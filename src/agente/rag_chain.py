@@ -106,6 +106,11 @@ else:
 
 coleccion = obtener_coleccion(raiz_del_proyecto / "chroma_db")
 
+if coleccion.count() == 0:
+    from indexar_documentos import indexar_todos_los_documentos
+    print("Colección vacía -- indexando los 20 documentos por primera vez...")
+    indexar_todos_los_documentos()
+
 
 def armar_contexto(chunks: list) -> str:
     """Concatena los chunks en un solo texto, cada uno con su fuente."""
