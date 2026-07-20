@@ -31,7 +31,7 @@ from rag_chain import responder
 RAIZ_DEL_PROYECTO = Path(__file__).parent.parent.parent
 
 # Versión del agente -- mismo número que en api.py y en el tag de Git.
-VERSION_AGENTE = "1.0.0"
+VERSION_AGENTE = "2.0.0"
 
 CATEGORIAS = [
     "Todas las áreas", "legal_compliance", "financiero", "rh", "estrategico",

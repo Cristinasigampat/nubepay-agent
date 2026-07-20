@@ -20,7 +20,7 @@ from logging_agente import registrar_ejecucion
 #Versión del agente -- subimos este número (siguiendo versionado semántico:
 # MAYOR.MENOR.PARCHE) cada vez que hacemos un release importante, y lo
 # reflejamos también en un tag de Git (ver Plan_de_clases_RAG.md).
-VERSION_AGENTE = "1.0.0"
+VERSION_AGENTE = "2.0.0"
 
 app = FastAPI(
     title="Agente NubePay ☁️💸​​",
