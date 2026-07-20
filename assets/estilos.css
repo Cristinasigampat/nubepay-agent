@@ -100,7 +100,7 @@
 
 /* --- Botón "Nueva conversación" --- */
 [data-testid="stSidebar"] button {
-    background-color: #244468 !important;
+    background-color: #d0adc6 !important;
     color: #FBEAF0 !important;
     border: none !important;
 }
@@ -108,7 +108,7 @@
 /* --- Caja de escribir el mensaje --- */
 [data-testid="stChatInput"],
 [data-testid="stChatInput"] textarea {
-    color: #f0e9e9 !important;
+    color: #320505 !important;
 }
 
 /** -- Cambiar color del spinner y el texto cuando esta buscando información ---*/
