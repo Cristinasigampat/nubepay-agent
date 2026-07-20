@@ -1,0 +1,81 @@
+<svg viewBox="0 0 1000 620" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, Arial, sans-serif">
+  <defs>
+    <marker id="flecha" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#0C447C"/>
+    </marker>
+  </defs>
+
+  <rect width="1000" height="620" fill="#F5F8FC"/>
+
+  <!-- Deployment boundary: Streamlit Community Cloud -->
+  <rect x="30" y="60" width="640" height="500" rx="14" fill="none" stroke="#D4537E" stroke-width="2" stroke-dasharray="8,6"/>
+  <text x="45" y="90" font-size="15" fill="#D4537E" font-weight="600">☁ Streamlit Community Cloud (despliegue)</text>
+
+  <!-- Documentos -->
+  <rect x="60" y="120" width="230" height="110" rx="10" fill="#FFFFFF" stroke="#062e5d" stroke-width="1.5"/>
+  <text x="175" y="150" font-size="15" fill="#062e5d" font-weight="600" text-anchor="middle">📄 Documentos</text>
+  <text x="175" y="172" font-size="12" fill="#3B3939" text-anchor="middle">docs/ (20 archivos,</text>
+  <text x="175" y="188" font-size="12" fill="#3B3939" text-anchor="middle">10 categorías)</text>
+  <text x="175" y="210" font-size="11" fill="#888" text-anchor="middle">PDF · Word · Excel</text>
+
+  <!-- Backend / Lógica RAG -->
+  <rect x="330" y="90" width="300" height="290" rx="10" fill="#EAF2FA" stroke="#0C447C" stroke-width="1.5"/>
+  <text x="480" y="118" font-size="15" fill="#0C447C" font-weight="700" text-anchor="middle">⚙️ Backend / Lógica RAG</text>
+
+  <rect x="352" y="132" width="256" height="34" rx="6" fill="#FFFFFF" stroke="#0C447C"/>
+  <text x="480" y="154" font-size="12" fill="#062e5d" text-anchor="middle">parsers.py + chunking.py</text>
+
+  <rect x="352" y="174" width="256" height="34" rx="6" fill="#FFFFFF" stroke="#0C447C"/>
+  <text x="480" y="196" font-size="12" fill="#062e5d" text-anchor="middle">embeddings.py + reranking.py</text>
+
+  <rect x="352" y="216" width="256" height="34" rx="6" fill="#FFFFFF" stroke="#0C447C"/>
+  <text x="480" y="238" font-size="12" fill="#062e5d" text-anchor="middle">vectorstore.py → 🗄 ChromaDB</text>
+
+  <rect x="352" y="258" width="256" height="34" rx="6" fill="#FFFFFF" stroke="#0C447C"/>
+  <text x="480" y="280" font-size="12" fill="#062e5d" text-anchor="middle">rag_chain.py (responder)</text>
+
+  <rect x="352" y="300" width="256" height="34" rx="6" fill="#FFFFFF" stroke="#0C447C"/>
+  <text x="480" y="322" font-size="12" fill="#062e5d" text-anchor="middle">logging_agente.py</text>
+
+  <text x="480" y="365" font-size="11" fill="#888" text-anchor="middle">(api.py: backend HTTP opcional, solo local)</text>
+
+  <!-- Frontend -->
+  <rect x="360" y="440" width="240" height="90" rx="10" fill="#FFFFFF" stroke="#062e5d" stroke-width="1.5"/>
+  <text x="480" y="470" font-size="15" fill="#062e5d" font-weight="600" text-anchor="middle">💬 Frontend</text>
+  <text x="480" y="492" font-size="12" fill="#3B3939" text-anchor="middle">app_chat.py (Streamlit)</text>
+  <text x="480" y="510" font-size="11" fill="#888" text-anchor="middle">import responder() directo</text>
+
+  <!-- LLM (externo) -->
+  <rect x="740" y="200" width="220" height="140" rx="10" fill="#FFFFFF" stroke="#D4537E" stroke-width="1.5"/>
+  <text x="850" y="230" font-size="15" fill="#D4537E" font-weight="700" text-anchor="middle">🧠 LLM</text>
+  <text x="850" y="255" font-size="12" fill="#3B3939" text-anchor="middle">Gemini API</text>
+  <text x="850" y="272" font-size="11" fill="#888" text-anchor="middle">(producción, en la nube)</text>
+  <text x="850" y="298" font-size="12" fill="#3B3939" text-anchor="middle">LM Studio</text>
+  <text x="850" y="315" font-size="11" fill="#888" text-anchor="middle">(desarrollo, local)</text>
+
+  <!-- Colaborador -->
+  <rect x="740" y="440" width="220" height="90" rx="10" fill="#FFFFFF" stroke="#062e5d" stroke-width="1.5"/>
+  <text x="850" y="475" font-size="15" fill="#062e5d" font-weight="600" text-anchor="middle">🧑 Colaborador</text>
+  <text x="850" y="497" font-size="12" fill="#3B3939" text-anchor="middle">de NubePay</text>
+
+  <!-- Flechas -->
+  <line x1="290" y1="175" x2="330" y2="175" stroke="#0C447C" stroke-width="2" marker-end="url(#flecha)"/>
+  <rect x="278" y="150" width="60" height="16" fill="#F5F8FC"/>
+  <text x="308" y="162" font-size="11" fill="#0C447C" text-anchor="middle">ingesta</text>
+
+  <line x1="480" y1="380" x2="480" y2="440" stroke="#0C447C" stroke-width="2" marker-end="url(#flecha)"/>
+  <line x1="460" y1="440" x2="460" y2="380" stroke="#0C447C" stroke-width="2" marker-end="url(#flecha)"/>
+  <rect x="390" y="396" width="60" height="32" fill="#F5F8FC"/>
+  <text x="420" y="408" font-size="11" fill="#0C447C" text-anchor="middle">pregunta /</text>
+  <text x="420" y="422" font-size="11" fill="#0C447C" text-anchor="middle">respuesta</text>
+
+  <line x1="630" y1="235" x2="740" y2="255" stroke="#D4537E" stroke-width="2" marker-end="url(#flecha)"/>
+  <line x1="740" y1="280" x2="630" y2="260" stroke="#D4537E" stroke-width="2" marker-end="url(#flecha)"/>
+  <rect x="655" y="170" width="60" height="16" fill="#F5F8FC"/>
+  <text x="685" y="182" font-size="11" fill="#D4537E" text-anchor="middle">prompt</text>
+
+  <line x1="740" y1="485" x2="602" y2="485" stroke="#062e5d" stroke-width="2" marker-end="url(#flecha)"/>
+  <rect x="631" y="458" width="80" height="16" fill="#F5F8FC"/>
+  <text x="671" y="470" font-size="11" fill="#062e5d" text-anchor="middle">usa la app</text>
+
+</svg>

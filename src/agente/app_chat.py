@@ -199,7 +199,7 @@ with st.sidebar:
         .st-key-sidebar_bottom {
             position: absolute;
             bottom: 5px;
-            width: 400px !important;
+            width: 350px !important;
         }
     </style>
     """)
