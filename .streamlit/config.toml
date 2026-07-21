@@ -8,3 +8,9 @@ font = "sans serif"
 
 [client]
 toolbarMode = "minimal"
+showErrorDetails = "full"
+
+[logger]
+# Forzamos a Streamlit a estar en nivel DEBUG o INFO para capturar todo
+level = "debug"
+messageFormat = "%(asctime)s %(message)s"

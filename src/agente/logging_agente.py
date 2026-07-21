@@ -32,7 +32,7 @@ def registrar_ejecucion(pregunta: str, resultado: dict, tiempo_ms: float) -> Non
     with open(RUTA_LOG, "a", encoding="utf-8") as archivo:
         archivo.write(json.dumps(entrada, ensure_ascii=False) + "\n")
 
-    print(f"[LOG-EJECUCION] {json.dumps(entrada, ensure_ascii=False)}")
+    print(f"[LOG-EJECUCION] {json.dumps(entrada, ensure_ascii=False)}",flush=True)
 
 
 
@@ -55,7 +55,7 @@ def registrar_feedback(pregunta: str, respuesta: str, feedback: str) -> None:
     with open(RUTA_LOG, "a", encoding="utf-8") as archivo:
         archivo.write(json.dumps(entrada, ensure_ascii=False) + "\n")
 
-    print(f"[LOG-FEEDBACK] {json.dumps(entrada, ensure_ascii=False)}")
+    print(f"[LOG-FEEDBACK] {json.dumps(entrada, ensure_ascii=False)}", flush=True)
 
 
 
