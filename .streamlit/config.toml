@@ -12,5 +12,5 @@ showErrorDetails = "full"
 
 [logger]
 # Forzamos a Streamlit a estar en nivel DEBUG o INFO para capturar todo
-level = "debug"
+level = "info"
 messageFormat = "%(asctime)s %(message)s"
