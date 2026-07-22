@@ -58,9 +58,27 @@ El desafío sugiere Oracle Cloud Infrastructure (OCI) como plataforma de desplie
 
 ## 🎬 Demostración
 
-<!-- TODO: insertar acá la captura o el GIF/video del agente respondiendo en la nube (Clase 16 del plan de clases) -->
+### ✅ Preguntas válidas
 
-*(Video/captura del agente funcionando en `nubepay-agent.streamlit.app` — próximamente en esta sección)*
+https://github.com/user-attachments/assets/2db333e4-6bc6-4fd4-86ee-9cf52d6032ad
+
+### 🚫 Preguntas fuera de alcance
+
+https://github.com/user-attachments/assets/8c9cf308-d5eb-4bb7-afb1-d625bd1f56e9
+
+### 🪵 Vista del log en tiempo real
+
+https://github.com/user-attachments/assets/a3f5bbef-5d0d-46e3-9083-64c21cbe912b
+
+
+### 📸 Capturas por categoría
+
+| RH | Finanzas | Operaciones | Onboarding | Estratégico |
+|---|---|---|---|---|
+| <a href="assets/rh.png"><img src="assets/rh.png" width="150"/></a> | <a href="assets/financiero.png"><img src="assets/financiero.png" width="150"/></a> | <a href="assets/operaciones.png"><img src="assets/operaciones.png" width="150"/></a> | <a href="assets/onboarding.png"><img src="assets/onboarding.png" width="150"/></a> | <a href="assets/estrategico.png"><img src="assets/estrategico.png" width="150"/></a> |
+
+
+
 
 **Funcionalidades principales:**
 - 💬 Chat con burbujas estilo WhatsApp (usuario a la derecha, agente a la izquierda)
